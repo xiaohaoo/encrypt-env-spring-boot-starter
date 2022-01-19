@@ -29,7 +29,7 @@ public class EncryptEnvApplicationTests {
     @Test
     void encrypt() throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
         SecretResolve aesSecretResolve = new AesSecretResolve(environment.getProperty("enc-key"));
-        System.out.println(aesSecretResolve.encrypt("spring boot"));
+        System.out.println(aesSecretResolve.encrypt("springs boot"));
     }
 
 

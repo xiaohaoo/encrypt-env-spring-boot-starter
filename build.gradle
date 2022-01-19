@@ -4,8 +4,12 @@ plugins {
     id 'java'
 }
 
+
 group 'com.xiaohaoo'
 version '1.0'
+
+apply from: 'publishing.gradle'
+
 
 configurations {
     compileOnly {

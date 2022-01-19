@@ -1,13 +1,10 @@
 package com.xiaohaoo.server.encryptenv.encrypt;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Base64;
 
 /**
@@ -17,11 +14,14 @@ import java.util.Base64;
  */
 public class AesSecretResolve implements SecretResolve {
 
-    public AesSecretResolve(String key) throws NoSuchPaddingException, NoSuchAlgorithmException {
-        assert key != null && key.length() == 16;
-        this.secretKeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
-        this.cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-
+    public AesSecretResolve(final String key) throws NoSuchPaddingException, NoSuchAlgorithmException {
+        assert key != null;
+        SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+        secureRandom.setSeed(key.getBytes());
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        keyGenerator.init(256, secureRandom);
+        this.secretKeySpec = new SecretKeySpec(keyGenerator.generateKey().getEncoded(), "AES");
+        this.cipher = Cipher.getInstance("AES");
     }
 
 
@@ -31,23 +31,15 @@ public class AesSecretResolve implements SecretResolve {
 
 
     @Override
-    public String encrypt(String encrypt) throws
-        InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public String encrypt(String encrypt) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         cipher.init(Cipher.ENCRYPT_MODE, this.secretKeySpec);
-        return Base64.getEncoder().encodeToString(cipher.doFinal(encrypt.getBytes(StandardCharsets.UTF_8)));
+        return Base64.getEncoder().encodeToString(cipher.doFinal(encrypt.getBytes()));
     }
 
     @Override
-    public String decrypt(String decrypt) throws
-        InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public String decrypt(String decrypt) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         cipher.init(Cipher.DECRYPT_MODE, this.secretKeySpec);
         return new String(cipher.doFinal(Base64.getDecoder().decode(decrypt)));
-    }
-
-    public static void main(String[] args) throws NoSuchPaddingException, NoSuchAlgorithmException,
-        IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
-        AesSecretResolve aesSecretResolve = new AesSecretResolve("xiaohaoxiaohaooo");
-        System.out.println(aesSecretResolve.encrypt("md3jrccyza0R7gsY14ZFyw=="));
     }
 
 }

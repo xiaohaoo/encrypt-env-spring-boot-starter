@@ -27,20 +27,20 @@ spring:
 1. 引入
 
     ```gradle
-    implementation 'com.xiaohaoo:oss-util:1.1'
+    implementation 'com.xiaohaoo:encrypt-env-spring-boot-starter:1.0'
     ```
 
     ```maven
     <dependency>
         <groupId>com.xiaohaoo</groupId>
-        <artifactId>oss-util</artifactId>
-        <version>1.1</version>
+        <artifactId>encrypt-env-spring-boot-starter</artifactId>
+        <version>1.0</version>
     </dependency>
     ```
 
 2. 配置
 
-   对配置文件中的敏感数据进行加密后添加前缀enc:即可。
+   对配置文件中的敏感数据进行加密后添加前缀**enc:**即可。
 
     ```yml
     spring:

@@ -29,7 +29,7 @@ import java.util.Objects;
  */
 public class EncryptEnvEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
-    private final String PREFFIX = "enc:";
+    private final String PREFIX = "enc:";
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
@@ -38,21 +38,22 @@ public class EncryptEnvEnvironmentPostProcessor implements EnvironmentPostProces
             try {
                 MutablePropertySources propertySources = environment.getPropertySources();
                 SecretResolve secretResolve = new AesSecretResolve(key);
-
                 for (PropertySource<?> propertySource : propertySources) {
                     if (propertySource instanceof OriginTrackedMapPropertySource) {
-                        Map<String, OriginTrackedValue> source = (Map<String, OriginTrackedValue>) propertySource.getSource();
+                        if (propertySource.getSource() instanceof Map) {
+                            Map<String, OriginTrackedValue> source = (Map<String, OriginTrackedValue>) propertySource.getSource();
 
-                        Map<String, Object> decEnvPropertySource = new HashMap<>();
+                            Map<String, Object> decEnvPropertySource = new HashMap<>();
 
-                        for (Map.Entry<String, OriginTrackedValue> entry : source.entrySet()) {
-                            processEnv(entry.getKey(), String.valueOf(entry.getValue()), decEnvPropertySource, secretResolve);
+                            for (Map.Entry<String, OriginTrackedValue> entry : source.entrySet()) {
+                                processEnv(entry.getKey(), String.valueOf(entry.getValue()), decEnvPropertySource, secretResolve);
+                            }
+
+                            MapPropertySource mapPropertySource = new MapPropertySource(String.format("%s-dec-env", propertySource.getName()),
+                                Collections.unmodifiableMap(decEnvPropertySource));
+
+                            propertySources.addFirst(mapPropertySource);
                         }
-
-                        MapPropertySource mapPropertySource = new MapPropertySource(String.format("%s-dec-env", propertySource.getName()),
-                            Collections.unmodifiableMap(decEnvPropertySource));
-
-                        propertySources.addFirst(mapPropertySource);
                     }
                 }
             } catch (NoSuchPaddingException | NoSuchAlgorithmException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
@@ -64,8 +65,8 @@ public class EncryptEnvEnvironmentPostProcessor implements EnvironmentPostProces
 
     public void processEnv(String key, String value, Map<String, Object> map, SecretResolve secretResolve) throws NoSuchPaddingException,
         IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
-        if (value.startsWith(PREFFIX)) {
-            String decrypt = secretResolve.decrypt(value.replace(PREFFIX, ""));
+        if (value.startsWith(PREFIX)) {
+            String decrypt = secretResolve.decrypt(value.replace(PREFIX, ""));
             map.put(key, decrypt);
         }
     }

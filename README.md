@@ -1,6 +1,6 @@
-## encrypt-env-spring-boot-starter
+# encrypt-env-spring-boot-starter
 
-### 使用场景
+# 使用场景
 
 在Spring Boot中，配置参数使用明文的方式造成敏感信息泄露，例如：
 
@@ -22,7 +22,7 @@ spring:
     url: enc:fas0AsdsfafJFP/adaewff
 ```
 
-### 使用方式
+# 使用方式
 
 1. 引入
 
@@ -40,7 +40,7 @@ spring:
 
 2. 配置
 
-   对配置文件中的敏感数据进行加密后添加前缀enc:即可。
+   对配置文件中的敏感数据进行加密后添加前缀**enc:**即可。
 
     ```yml
     spring:
@@ -50,7 +50,7 @@ spring:
         url: enc:fas0AsdsfafJFP/adaewff
     ```
 
-### 加密方法
+# 加密方法
 
 计划支持：
 - [x] AES

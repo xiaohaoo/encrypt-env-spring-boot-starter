@@ -26,11 +26,11 @@ spring:
 
 1. 引入
 
-    ```gradle
+    ```groovy
     implementation 'com.xiaohaoo:encrypt-env-spring-boot-starter:1.0'
     ```
 
-    ```maven
+    ```xml
     <dependency>
         <groupId>com.xiaohaoo</groupId>
         <artifactId>encrypt-env-spring-boot-starter</artifactId>

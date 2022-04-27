@@ -30,7 +30,7 @@ spring:
 1. 引入
 
 ```groovy
-implementation 'com.xiaohaoo:encrypt-env-spring-boot-starter:1.0'
+implementation 'com.xiaohaoo:encrypt-env-spring-boot-starter:1.1.0'
 ```
 
 ```xml
@@ -38,7 +38,7 @@ implementation 'com.xiaohaoo:encrypt-env-spring-boot-starter:1.0'
 <dependency>
     <groupId>com.xiaohaoo</groupId>
     <artifactId>encrypt-env-spring-boot-starter</artifactId>
-    <version>1.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 

@@ -1,18 +1,16 @@
+/*
+ * Copyright (c) 2022 xiaohao & xiaohaoo
+ */
+
 package com.xiaohaoo.server.encryptenv;
 
-import com.xiaohaoo.server.encryptenv.encrypt.AesSecretResolve;
-import com.xiaohaoo.server.encryptenv.encrypt.SecretResolve;
+import com.xiaohaoo.server.encryptenv.encrypt.AesSecretHandler;
+import com.xiaohaoo.server.encryptenv.encrypt.SecretHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 @SpringBootTest
 @SpringBootConfiguration
@@ -24,13 +22,12 @@ public class EncryptEnvApplicationTests {
     @Test
     void contextLoads() {
         System.out.println(environment.getProperty("hello"));
+        System.out.println(environment.getProperty("hello-pattern"));
     }
 
     @Test
-    void encrypt() throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
-        SecretResolve aesSecretResolve = new AesSecretResolve(environment.getProperty("enc-key"));
+    void encrypt() {
+        SecretHandler aesSecretResolve = new AesSecretHandler("xiaohaoo");
         System.out.println(aesSecretResolve.encrypt("springs boot"));
     }
-
-
 }

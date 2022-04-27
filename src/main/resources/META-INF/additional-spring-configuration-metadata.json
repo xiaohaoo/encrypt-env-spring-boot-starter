@@ -1,0 +1,12 @@
+{
+  "properties": [
+    {
+      "name": "hello",
+      "description": "自定义加密信息"
+    },
+    {
+      "name": "hello-pattern",
+      "description": "自定义加密信息"
+    }
+  ]
+}

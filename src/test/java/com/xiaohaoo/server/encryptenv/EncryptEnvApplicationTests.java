@@ -28,6 +28,6 @@ public class EncryptEnvApplicationTests {
     @Test
     void encrypt() {
         SecretHandler aesSecretResolve = new AesSecretHandler("xiaohaoo");
-        System.out.println(aesSecretResolve.encrypt("springs boot"));
+        System.out.println(aesSecretResolve.encrypt("spring boot"));
     }
 }
